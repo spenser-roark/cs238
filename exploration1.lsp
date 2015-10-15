@@ -23,3 +23,24 @@
 	v
 	)
        )
+
+
+;  I suppose another vector (truePrimeSet) will be set previously
+;  and it will be a global vector object of booleans
+
+(defun calcNumNotPrime(setOfOutputs) ; input is the return set of a Similar-to-Euler function
+       "Determine the number of outputs from a Similar-to-Euler set that are not prime."
+
+; Function body
+(
+   (defvar numNotPrime 0)
+
+   (dotimes (i (length setOfOutputs))
+    (if (elt truePrimeSet i)
+        ((setq numNotPrime (1+ numNotPrime)))
+      ;
+   (prin1 numNotPrime)
+)
+
+)
+
