@@ -1,12 +1,12 @@
 (require 'cl)
 
 
-(defun euler(x,c)
-  (let (val (+ (* x x) c)))
-  val
+(defun euler(x c)
+  (progn
+    (setq val (+ (* x x) c))
+    val
+  )
 )
-
-(print euler(2,2))
 
 
 ;(defun get-user-input (a x y)

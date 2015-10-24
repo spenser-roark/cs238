@@ -4,9 +4,9 @@
 (require 'cl)
 (defun getPrimes (len)
   (let (
-	(v (make-bool-vector len t)
+	  (v (make-bool-vector len t)
+          )
        )
-  )
    (progn
     (loop for i from 2 to (- (length v) 1)
 	do(loop for j from i to (- (length v) 1)
