@@ -1,0 +1,61 @@
+#+TITLE: Sweetness
+#+AUTHOR: Rick Neff
+#+EMAIL:  NeffR@byui.edu
+#+LANGUAGE:  en
+#+OPTIONS:   H:4 num:nil toc:nil \n:nil @:t ::t |:t ^:t *:t TeX:t LaTeX:t
+
+* EN4
+
+  You are invited to explore some of the ramifications of polynomial
+  prime generation as it touches probability theory. This invitation to
+  exploration is codenamed /Sweetness/.
+
+** Requirements
+
+   Euler's polynomial, \(x^2 + x + 41\), has the /sweet/ feature that
+   it computes a prime number for every integer \(x\) in the range \(-40 \le
+   x \le 39\), which is 80 primes total. So, in probability terms, the
+   chances that you will generate a prime by plugging in a random integer
+   in that range are 100%. So no chance about it, it's certain!
+
+   Other polynomials of the form \(f(x) = x^2 + x + C\), where \(C\) is some
+   integer constant, can also generate primes, though maybe not as
+   reliably as Euler's (which is the special case where \(C=41\)).
+   Obviously, different ranges and constants will vary in the number of
+   primes generated.
+
+   Suppose the /sweetness/ of a given range+constant pair is a
+   quantity with the following properties: The more integers in the range
+   that generate primes through this constant plugged into the polynomial
+   (and taking the absolute value, \(\left| f(x) \right|\)), the higher the
+   sweetness. But the less /uniform/ the distribution of primes
+   generated in that range with that constant, the lower the
+   sweetness. So the first example, with range+constant \(-40 \le x \le
+   39, C=41\), is pretty sweet --- it's completely uniform (i.e., there
+   are zero gaps). But widening the range would potentially lower the
+   sweetness, because it might less reliably generate primes (i.e., there
+   are some gaps).
+
+   How would you define sweetness to quantify these properties? That is
+   the first challenge of this exploration. Then there is a trade-off
+   analysis task --- to find a range and a constant that have a sweetness
+   value as high as possible (up to the arbitrary computational limit of
+   what intermediate as well as final \(x\) values fit in the elisp integer
+   type). To fix one degree of freedom, which will save some time, use a
+   constant size of ten thousand for the range.
+
+   Write code that conducts the sweetness search as systematically as
+   possible. You must also create a straightforward Sieve of
+   Eratosthenes implementation to test primality, rather than using a
+   *probabilistic algorithm*. Why? Because an *isProbablyPrime*
+   function would be overkill --- too sour --- you want sweet
+   certainty!
+
+** Expectations
+
+   In addition to writing elisp code, you are expected to write a
+   report having a good introduction (stating the goal of this
+   activity) and conclusion (summarizing your results), and using
+   correct grammar and spelling throughout.
+
+   You are also expected to use *org mode* to write your report.
