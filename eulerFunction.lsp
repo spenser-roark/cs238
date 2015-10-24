@@ -3,10 +3,12 @@
 
 (defun euler(x c)
   (progn
-    (setq val (+ (* x x) c))
+    (defvar val (+ (* x x) c))
     val
   )
 )
+
+(print (euler 2 3))
 
 
 ;(defun get-user-input (a x y)
