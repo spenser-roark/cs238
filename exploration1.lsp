@@ -11,7 +11,7 @@
 
 ; run getPrimes method to get a bool-vector of prime numbers
 (print "getting primes")
-(setq range 100)
+(setq range 5000)
 (setq sqRange (sqrt range))
 (setq actualPrimes (getPrimes range))
 (print "got primes")
@@ -21,10 +21,10 @@
 
 ; run the euler-like function to get a list of possible primes
 (print "running euler")
-(setq bestC 0)
-(setq sweetestRatio 0.0)
+(setq bestC -1)
+(setq sweetestRatio -1.0)
 (dotimes (c sqRange)
-  (print "running for c=")
+;  (print "running for c=")
   (print c)
   ; keep track of the number the eurler function got wrong and right
   (setq right 0)
@@ -37,33 +37,35 @@
     (setq value (abs (euler x c)))
     ; check to see if this value has already been found
     (setq found (find value possiblePrimes))
-    (if (not found)
-	; if this value has not been found, add it to the possible primes list
-	( 
-	 (setq junklist (list 1 value))
-	 (setq possiblePrimes (append junklist possiblePrimes))
+    (unless found
+      ; if this value has not been found, add it to the possible primes list
+      (setq junklist (make-list 1 value))
+      (setq possiblePrimes (append junklist possiblePrimes))
+
 	 ; then check to see if it is a correct prime
          (if (elt actualPrimes value)
-	   (setq right (+ correct 1)) ; if true
+	   (setq right (+ right 1)) ; if true
 	   (setq wrong (+ wrong 1))   ; if false
 	 )
-	)
+	 (print right)
+	 (print wrong)
     )
   )
   ; check the sweetness here
-  ; we will define sweetness as how many primes were found over the range
-  (setq posSweet (/ right range))
-  (if (> posSweet sweetestRatio)
-      (
-       (setq bestC (c))
-       (setq sweetestRatio (posSweet))
+  ; we will define sweetness as how many primes were found 
+  ;over the total given primes
+  (setq posSweet (/ right (+ wrong right)))
+  (if (> right sweetestRatio)
+      (progn 
+       (setq bestC c)
+       (setq sweetestRatio right)
       )
   )
 )
 	  
-    
+    bestC
 )
 )
 
 
-(main)
+(print (main))
