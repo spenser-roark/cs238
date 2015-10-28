@@ -1,4 +1,3 @@
-
 (defun main()
 (progn
 (require 'cl)
@@ -42,7 +41,7 @@
     (unless found
       ; if this value has not been found, add it to the possible primes list
       (setq junklist (make-list 1 value))
-      (setq possiblePrimes (append junklist possiblePrimes)
+      (setq possiblePrimes (append junklist possiblePrimes))
 
 	 ; then check to see if it is a correct prime
          (if (elt actualPrimes value)
