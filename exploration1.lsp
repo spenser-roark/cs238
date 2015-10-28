@@ -3,32 +3,34 @@
 (progn
 (require 'cl)
 "this function will load and run exploration 1"
-(load "~/git/cs238/getPrimes.lsp")
-(load "~/git/cs238/eulerFunction.lsp")
-(load "~/git/cs238/getUserInput.lsp")
-(load "~/git/cs238/calcNumPrime.lsp")
+(load "~/programs/school/cs238/getPrimes.lsp")
+(load "~/programs/school/cs238/eulerFunction.lsp")
+(load "~/programs/school/cs238/getUserInput.lsp")
+(load "~/programs/school/cs238/calcNumPrime.lsp")
 (print "functions loaded")
 
 ; run getPrimes method to get a bool-vector of prime numbers
 (print "getting primes")
-(setq range 5000)
+(setq range 1000)
 (setq sqRange (sqrt range))
 (setq actualPrimes (getPrimes range))
 (print "got primes")
 
 ; count the number of primes in the actualPrimes list
 
-
 ; run the euler-like function to get a list of possible primes
 (print "running euler")
-(setq bestC -1)
+(setq  bestC -1)
 (setq sweetestRatio -1.0)
+(setq right 0)
+(setq wrong 0)
+
 (dotimes (c sqRange)
 ;  (print "running for c=")
-  (print c)
+  (princ "C: " )
+  (princ c )
+  (princ "\n")
   ; keep track of the number the eurler function got wrong and right
-  (setq right 0)
-  (setq wrong 0)
   ; this list will be filled with all of the values found by the euler function
   (setq possiblePrimes (make-list 0 0))
   ; for 0 to 100
@@ -40,15 +42,19 @@
     (unless found
       ; if this value has not been found, add it to the possible primes list
       (setq junklist (make-list 1 value))
-      (setq possiblePrimes (append junklist possiblePrimes))
+      (setq possiblePrimes (append junklist possiblePrimes)
 
 	 ; then check to see if it is a correct prime
          (if (elt actualPrimes value)
 	   (setq right (+ right 1)) ; if true
 	   (setq wrong (+ wrong 1))   ; if false
 	 )
-	 (print right)
-	 (print wrong)
+	 (princ "Right: ")
+	 (princ right)
+	 (princ "\n")
+	 (princ "Wrong: ")
+	 (princ wrong)
+	 (princ "\n\n\n\n")
     )
   )
   ; check the sweetness here
@@ -62,10 +68,9 @@
       )
   )
 )
-	  
+
     bestC
 )
 )
 
-
-(print (main))
+(main)
