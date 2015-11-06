@@ -3,7 +3,7 @@
 
 (defun euler(x c)
   (progn
-    (defvar val (+ (* x x) c))
+    (setq val (+ (* x x) c))
     val
   )
 )
