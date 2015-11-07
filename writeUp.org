@@ -1,12 +1,38 @@
 
+* Sweetness
+
+** Introduction
+The purpose of this assignment was to find the "sweetest" c value for the 
+Euler function for finding probable primes. x^2 +x + c But what constitutes sweetness?
+Is it the number of primes found? Or the distribution of primes over the range?
+Or could it be the chances that a given value from the Euler function is actually prime?
+
+** My Sweetest Choice
+After some consideration I decided that the sweetness of prime was dependant
+upon what you needed. There are times that what you need is as many 
+prime like numbers as possible within a given range. Other times you 
+need to be certain that the number you are given is, in fact, prime.
+For my purposes I choose to consider the sweetest value to be the one
+that gave me the the highest odds of a value actually being prime.
+Sweetness = right_answers / total_answers
+
+Of course it is not possible to try and check every prime in existence.
+This is because it is very difficult to find primes in the first place and
+computers have limited resources. So I choose to only check for values 
+within the range of 0-10000. Values that are returned from the Euler
+function are compared to values found on a table of primes that was
+generated using the Sieve of Eratosthenes.
+
+** My Results
+The following code will find the sweetest Euler function.
+#+BEGIN_SRC emacs-lisp
+	
 (defun main(range)
 (progn
 (require 'cl)
 "this function will load and run exploration 1"
 (load "~/git/cs238/getPrimes.lsp")
 (load "~/git/cs238/eulerFunction.lsp")
-(load "~/git/cs238/getUserInput.lsp")
-(load "~/git/cs238/calcNumPrime.lsp")
 (print "functions loaded")
 
 ; run getPrimes method to get a bool-vector of prime numbers
@@ -90,3 +116,19 @@
 )
 )
 
+#+END_SRC
+
+After running this code with the range of 10000, the sweetest value 
+is the number 58 with a probability of 41% to give you a correct prime. 
+
+** How to run this code from a Linux terminal.
+The following is the command you need to run in order to run it from a linux terminal.
+
+#+BEGIN_SRC emacs-lisp
+
+emacs --batch -l exploration1.lsp -eval '(main 10000)'
+
+#+END_SRC
+
+Note that in order to run the code, the path of the "main" functions
+requried files must be changed to the location on the files on the local system.

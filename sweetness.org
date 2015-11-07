@@ -59,3 +59,78 @@
    correct grammar and spelling throughout.
 
    You are also expected to use *org mode* to write your report.
+
+** What Is True?
+
+  The following code block is a self-assesssment tool that allows you to
+  use "fuzzy logic" (truth values from 0 to 100):
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defun what-is-true-about-my-engagement-with-sweetness ()
+    "If need be, replace a 100 with a smaller number to reflect how much you feel you deserve."
+    (vector
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; What is true of my experience in general?                              ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["I had fun." 5]
+  ["I collaborated with one or more classmates." 100]
+  ["I learned something new." 100]
+  ["I achieved something meaningful, or something I can build upon at a later time." 100]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; What is true of my report on what I learned?                            ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["I used org mode to write it." 100]
+  ["I explain usage of my code with plain instructions on how to run WITH command-line parameters to show what it can do." 100]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; What is true of the mechanical "infelicities" (misspelled words,        ;;
+  ;; grammatical errors, punctuation errors) in my report of what I learned? ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["There are fewer than four." 100]
+  ["There are fewer than three." 100]
+  ["There are fewer than two." 100]
+  ["There are none." 100]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; What is true of how my code is parameterized?                           ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["It runs without the need for user input via files, or other non-command-line input." 100]
+  ["Thus it uses command-line parameters only." 100]
+  ["With command-line parameters it allows the user to choose which tests to run." 100]
+  ["With command-line parameters it allows for computing the sweetness value of a specific range/constant pair." 50]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; What is true of my Sieve of Erathosthenes code?                         ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["It avoids the waste of calculating more primes than necessary." 100]
+  ["It avoids the waste of calculating and putting primes in a vector (or other collection type) and determining primeness by searching the vector." 100]
+  ["It is efficient, filling a bool-vector one time up front, and answering 'Is n prime' by returning the n'th element of this array." 100]
+  ["It fills this bool array in under a minute on an unloaded Linux lab node." 100]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; What is true of how my code does calculations, in general?              ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["It respects the limit of what intermediate results (like x * x) fit in an elisp fixnum." 100]
+  ["It respects the limit of what will fit in an elisp fixnum overall." 100]
+  ["It accounts for the fundamental feature of the distribution of primes that smaller numbers are more likely to be prime than larger ones." 100]
+  ["It calculates unique primes for the best range/constant pairs --- NO duplicates." 100]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; What is true of how my code calculates sweetness, in particular?        ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["It uses a measure of plenitude probabilistically, meaning 0 <= p <= 1." 100]
+  ["It uses a measure of distribution sparingly --- in other words, conditionally." 100]
+  ["It uses judicious conditions for applying this measure." 100]
+  ["It uses this measure accurately." 100]
+  ))
+
+#+END_SRC
+   
