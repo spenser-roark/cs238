@@ -1,0 +1,177 @@
+#+TITLE: Ripeness
+#+AUTHOR: Rick Neff
+#+EMAIL:  NeffR@byui.edu
+#+LANGUAGE:  en
+#+OPTIONS:   H:4 num:nil toc:nil \n:nil @:t ::t |:t ^:t *:t TeX:t LaTeX:t
+
+* EN2
+
+  You are invited to explore some of the ways to implement trees in
+  the service of a little-known kind of sorting algorithm. This
+  invitation to exploration is codenamed /Ripeness/.
+
+** Requirements
+
+   The Tournament Sort uses an ordered binary tree to sort numbers in
+   descending (or ascending) order. Set up a two-player multi-round
+   tournament by starting with each player paired off with a partner.
+   (This works best when the number of players is a power of two,
+   otherwise "byes" must be handled.) With the strength of each player
+   represented as a number, a node in the tree stores that number, and
+   the first round is set up by creating a sequence of tree nodes. The
+   winners of that round are the higher (or lower if the tournament is
+   a golf tournament --- the lower score the better) of the values in
+   each pair of adjacent nodes, working left to right. A tree is built
+   from the bottom up by creating parent nodes whose children are the
+   two nodes matched in the current round, the value in each parent
+   node being set to the max (or min) of the values of its
+   children. The next round pairs the parent winners created in the
+   previous round against each other, and play creates the parent
+   winners of that round. This proceeds level by level (round by
+   round) until there are two players left, and the root of the entire
+   tree is the parent winner of those last two. The value at the root
+   will be the overall winner; that is, the highest (or lowest) value
+   in the original list of numbers.
+
+   The tree is now built, and the value at the root can be printed out
+   or stored as the first element in a new list. That ends stage one
+   of the algorithm. The next stage begins by replacing the value of
+   the leaf node whose value won (made it to the root) by a sentinel
+   value representing the smallest possible number (negative infinity
+   or implementation equivalent --- for sorting in descending order of
+   course). This will always lose in its match-up, so the next highest
+   value will propagate up the tree to the root. The tree is already
+   built, so there's no longer a need to create parents of winners on
+   the way up. (Of course, another possible implementation could
+   create the entire tree first, and then just set the values of the
+   nodes on each stage of the algorithm.)
+
+   Iterating this stage continues, one value being crowned winner (and
+   recorded) at the end of each stage, until all leaf values have been
+   set to the minimum. The list of values is now sorted.
+
+   Your challenge is to implement this algorithm in elisp, with a
+   list-of-lists (or some other) representation of a tree. Use the
+   supplied sample code as a guide and a starting point. Be sure to
+   use recursion in your solution.
+
+** Sample Code
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq eval-expression-print-level 5 eval-expression-print-length 100)
+
+(setq a 3 b 4 c 16 d 13 e 1 f 9 g 11 h 2 i 8 j 10 k 7 l 15 m 5 n 12 o 14 p 6)
+
+; a list of a number followed by two lists represents a node with a
+; value and two children, which are also nodes represented as a list
+; of a number value followed by two lists.
+
+(setq ab (list 0 (list a nil nil) (list b nil nil))
+      cd (list 0 (list c nil nil) (list d nil nil))
+      ef (list 0 (list e nil nil) (list f nil nil))
+      gh (list 0 (list g nil nil) (list h nil nil))
+      ij (list 0 (list i nil nil) (list j nil nil))
+      kl (list 0 (list k nil nil) (list l nil nil))
+      mn (list 0 (list m nil nil) (list n nil nil))
+      op (list 0 (list o nil nil) (list p nil nil))
+      abcd (list 0 ab cd)
+      efgh (list 0 ef gh)
+      ijkl (list 0 ij kl)
+      mnop (list 0 mn op)
+      abcdefgh (list 0 abcd efgh)
+      ijklmnop (list 0 ijkl  mnop)
+      abcdefghijklmnop (list 0 abcdefgh ijklmnop))
+
+(setq tree abcdefghijklmnop)
+
+ab ; => (0 (3 nil nil) (4 nil nil))
+cd ; => (0 (16 nil nil) (12 nil nil))
+ef ; => (0 (1 nil nil) (9 nil nil))
+gh ; => (0 (11 nil nil) (2 nil nil))
+ij ; => (0 (8 nil nil) (10 nil nil))
+kl ; => (0 (7 nil nil) (15 nil nil))
+mn ; => (0 (5 nil nil) (12 nil nil))
+op ; => (0 (14 nil nil) (6 nil nil))
+abcd ; => (0 (0 (3 nil nil) (4 nil nil)) (0 (16 nil nil) (12 nil nil)))
+efgh ; => (0 (0 (1 nil nil) (9 nil nil)) (0 (11 nil nil) (2 nil nil)))
+ijkl ; => (0 (0 (8 nil nil) (10 nil nil)) (0 (7 nil nil) (15 nil nil)))
+mnop ; => (0 (0 (5 nil nil) (12 nil nil)) (0 (14 nil nil) (6 nil nil)))
+abcdefgh ; => (0 (0 (0 (3 nil nil) (4 nil nil)) (0 (16 nil nil) (12 nil nil))) (0 (0 (1 nil nil) (9 nil nil)) (0 (11 nil nil) (2 nil nil))))
+ijklmnop ; => (0 (0 (0 (8 nil nil) (10 nil nil)) (0 (7 nil nil) (15 nil nil))) (0 (0 (5 nil nil) (12 nil nil)) (0 (14 nil nil) (6 nil nil))))
+abcdefghijklmnop ; => (0 (0 (0 (0 (3 nil nil) (4 nil nil)) (0 (16 nil nil) (12 nil nil))) (0 (0 (1 nil nil) (9 nil nil)) (0 (11 nil nil) (2 nil nil)))) (0 (0 (0 (8 nil nil) (10 nil nil)) (0 (7 nil nil) (15 nil nil))) (0 (0 (5 nil nil) (12 nil nil)) (0 (14 nil nil) (6 nil nil)))))
+
+(defun get-value (node)
+  (and (listp node) (= (length node) 3) (first node)))
+
+(defun set-value (node new-value)
+  (and (listp node) (= (length node) 3)
+       (numberp (first node)) (setf (first node) new-value)))
+
+(defun get-left-child (node)
+  (and (listp node) (= (length node) 3) (second node)))
+
+(defun get-right-child (node)
+  (and (listp node) (= (length node) 3) (third node)))
+
+(get-left-child ab) ; => (3 nil nil)
+(get-right-child ab) ; => (4 nil nil)
+(get-left-child abcd) ; => (0 (3 nil nil) (4 nil nil))
+(get-right-child abcd) ; => (0 (16 nil nil) (12 nil nil))
+(get-left-child abcdefgh) ; => (0 (0 (3 nil nil) (4 nil nil)) (0 (16 nil nil) (12 nil nil)))
+(get-right-child abcdefgh) ; => (0 (0 (1 nil nil) (9 nil nil)) (0 (11 nil nil) (2 nil nil)))
+
+#+END_SRC
+
+** What Is True?
+
+  The following code block is a self-assesssment tool that allows you to
+  use "fuzzy logic" (truth values from 0 to 100):
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defun what-is-true-about-my-engagement-with-ripeness ()
+    "If need be, replace a 100 with a smaller number to reflect how much you feel you deserve."
+    (vector
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; What is true of my experience in general?                              ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["I had fun." 100]
+  ["I collaborated with one or more classmates." 100]
+  ["I learned something new." 100]
+  ["I achieved something meaningful, or something I can build upon at a later time." 100]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; What is true of my report on what I learned?                            ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["I used org mode to write it." 100]
+  ["I explain usage of my code with plain instructions on how to run WITH command-line parameters to show what it can do." 100]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; What is true of the mechanical "infelicities" (misspelled words,        ;;
+  ;; grammatical errors, punctuation errors) in my report of what I learned? ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["There are fewer than four." 100]
+  ["There are fewer than three." 100]
+  ["There are fewer than two." 100]
+  ["There are none." 100]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; What is true about the correctness and completeness of my code?         ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["It correctly sorts as verified by tests of my own devising." 100]
+  ["It handles power-of-two-sized lists of numbers." 100]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; What is true about the elegance of my code?                             ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["It has some by virtue of its correctness, as first and foremost, an elegant solution is a correct one." 100]
+  ["It increases by my implementing the tournament sort, not some other sorting algorithm." 100]
+  ["It increases by a correct and natural use of recursion, perhaps in finding or comparing nodes." 100]
+  ["It increases by my finding a good way to handle both descending AND ascending order sorting." 100]
+  ["It increases by my finding a good way to handle lists whose size is NOT a power of 2." 100]
+  ))
+#+END_SRC
