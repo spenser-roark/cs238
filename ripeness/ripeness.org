@@ -1,6 +1,6 @@
 #+TITLE: Ripeness
-#+AUTHOR: Rick Neff
-#+EMAIL:  NeffR@byui.edu
+#+AUTHOR: Spenser Roark
+#+EMAIL:  roa09001@byui.edu
 #+LANGUAGE:  en
 #+OPTIONS:   H:4 num:nil toc:nil \n:nil @:t ::t |:t ^:t *:t TeX:t LaTeX:t
 
@@ -162,16 +162,16 @@ abcdefghijklmnop ; => (0 (0 (0 (0 (3 nil nil) (4 nil nil)) (0 (16 nil nil) (12 n
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   ["It correctly sorts as verified by tests of my own devising." 100]
-  ["It handles power-of-two-sized lists of numbers." 100]
+  ["It handles power-of-two-sized lists of numbers." 85]
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; What is true about the elegance of my code?                             ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  ["It has some by virtue of its correctness, as first and foremost, an elegant solution is a correct one." 100]
+  ["It has some by virtue of its correctness, as first and foremost, an elegant solution is a correct one." 30]
   ["It increases by my implementing the tournament sort, not some other sorting algorithm." 100]
-  ["It increases by a correct and natural use of recursion, perhaps in finding or comparing nodes." 100]
-  ["It increases by my finding a good way to handle both descending AND ascending order sorting." 100]
-  ["It increases by my finding a good way to handle lists whose size is NOT a power of 2." 100]
+  ["It increases by a correct and natural use of recursion, perhaps in finding or comparing nodes." 35]
+  ["It increases by my finding a good way to handle both descending AND ascending order sorting." 95]
+  ["It increases by my finding a good way to handle lists whose size is NOT a power of 2." 50]
   ))
 #+END_SRC

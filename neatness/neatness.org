@@ -1,0 +1,214 @@
+#+TITLE: Neatness
+#+AUTHOR: Rick Neff
+#+EMAIL:  NeffR@byui.edu
+#+LANGUAGE:  en
+#+OPTIONS:   H:4 num:nil toc:nil \n:nil @:t ::t |:t ^:t *:t TeX:t LaTeX:t
+
+* EN3
+
+  You are invited to investigate certain behaviors of Boolean
+  networks, and discover their beauty and neatness. This invitation to
+  exploration is codenamed /Neatness/.
+
+** Background
+
+   Knowledge of Boolean logic and gating networks opens the door to
+   exploring the fascinating world of combinational circuits
+   with a limited kind of feedback. This is not the kind of feedback you
+   see in sequential circuits with memory, which are implemented using
+   latches or flip-flops or the like. Instead, the feedback happens with
+   a built-in delay.
+
+   Specifically, these Boolean networks are regular one-dimensional arrays
+   of homogeneous cells (gates, if you will) interconnected in a
+   "neighborly" fashion.  For example, the diagram below shows part of
+   an "n-by-1" array, with each cell connected to its neighbor on the
+   right and on the left by means of the wires that enter each group of
+   three cells (those being a cell, its left neighbor and its right
+   neighbor---for example, *C1, C2, C3* is one group of three cells, *C2,
+   C3, C4* is another, etc.).  The middle wire is considered the output
+   of a specific Boolean function of degree 3 that each cell computes on
+   its three inputs, the middle wire also being the second of three
+   inputs that enter the cell on the top.  So the middle wire leaves the
+   cell on the bottom and "loops around" to become an input again.
+   This loop provides the delay.
+
+#+ATTR_HTML: :alt Boolean network :title A Boolean Network of Cells
+http://firstthreeodds.org/img/boolnet.png
+
+
+   Think of the computation of this circuit as continuous or ongoing, one
+   that loops while observing the updated values of all the wires leaving
+   the cells. The idea is to excite the circuit by "seeding" one wire's
+   value, that is, setting it to be true while all the rest are initially
+   false, perform the cells' computation that changes (possibly) all the
+   wires' current values to new ones, and then "probe" the output wires
+   to look at their new values just after being set. The wires' new
+   values then become their current values, and the compute-probe-update
+   cycle is repeated. How many times? That number, as well as the
+   size of the network (how many cells) should be variable, not
+   fixed.
+
+
+** Requirements
+
+   Use the supplied sample code as a guide and a starting point.
+   Explore what patterns emerge in the probed output of these
+   Boolean networks. Each of the 256 possible Boolean functions of
+   degree 3 could generate a different pattern, although there may be
+   duplicates because of symmetry. What kinds of patterns (simple or
+   complex, random-looking or sophisticated, "gnarly" or repetitive,
+   etc.) do you observe? What if you were to supply each cell with a
+   different Boolean function, randomly selected?!
+
+** Supplied Sample Code
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+
+(defvar *use-1-and-0* t
+  "Use 1 and 0 to show a wire's value, if t (the default);
+   otherwise use a * and a blank."
+)
+
+; Represent a wire as a cons cell storing t or nil, 
+; the car holding the "current" value, the cdr holding the "new" value
+
+(defun make-wire ()
+  (cons nil nil))
+
+(defun print-wire (w)
+  (let ((val (get-wire-value w)))
+    (princ (if *use-1-and-0*
+	       (if val "1" "0")
+	     (if val "*" " ")))))
+
+; Represent a Boolean function of degree 3 with an 8-bit integer
+
+(defun evaluate-Boolean-function (bfn i1 i2 i3)
+  ;; we did this in class, remember?
+)
+
+; Represent a cell as a function evaluating a Boolean function
+; of degree 3. It gets its input wire values and sets the new
+; value of its "output" (wire y).
+
+(defun cell (bfn x y z)
+  ;; also for you to flesh out
+)
+
+(defun build-network-and-simulate-it (Boolean-function-number
+				      number-of-cells
+				      number-of-steps)
+  ;; TODO: create number-of-cells wires
+
+    ;; TODO: set to true the new value of the middle-most wire
+    ;; (the middle of the whole array, *NOT* the middle wire of each cell)
+
+
+    ;; TODO: update values to new values and show (output) all wires
+
+
+    ;; TODO: iterate the next two TODOs for number-of-steps steps.
+
+	  ;; TODO "create a network" of cells with wires evaluating the
+	  ;; Boolean-function-number
+
+	  ;; TODO update and show wires
+
+)
+#+END_SRC
+
+** Expectations
+
+   In addition to writing elisp code, you are expected to write a
+   report having a good introduction (stating the goal of this
+   activity) and conclusion (summarizing your results), and using
+   correct grammar and spelling throughout.
+
+   You are also expected to use *org mode* to write your report.
+
+** What Is True?
+
+  The following code block is a self-assesssment tool that allows you to
+  use "fuzzy logic" (truth values from 0 to 100):
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defun what-is-true-about-my-engagement-with-neatness ()
+    "If need be, replace a 100 with a smaller number to reflect how much you feel you deserve."
+    (vector
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; What is true of my experience in general?                              ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["I had fun." 100]
+  ["I collaborated with one or more classmates." 100]
+  ["I learned something new." 100]
+  ["I achieved something meaningful, or something I can build upon at a later time." 100]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; What is true of my report on what I learned?                            ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["I used org mode to write it." 100]
+  ["I explain usage of my code with plain instructions on how to run WITH command-line parameters to show what it can do." 100]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; What is true of the mechanical "infelicities" (misspelled words,        ;;
+  ;; grammatical errors, punctuation errors) in my report of what I learned? ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["There are fewer than four." 100]
+  ["There are fewer than three." 100]
+  ["There are fewer than two." 100]
+  ["There are none." 100]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; What is true about the correctness and completeness of my code?         ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["It correctly implements a Wire as a cons." 100]
+  ["It correctly implements a degree-3 Boolean function as an integer." 100]
+  ["It correctly implements the cell function." 100]
+  ["It correctly implements the first TODO." 100]
+  ["It correctly implements the second TODO." 100]
+  ["It correctly implements the third TODO." 100]
+  ["It correctly implements the fourth TODO." 100]
+  ["It correctly implements the fifth TODO." 100]
+  ["It correctly implements the sixth TODO." 100]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; How well did I categorize the various patterns I observed?              ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["I described how well with more than zero sentences in my report." 100]
+  ["I described how well with more than one Good sentence in my report." 100]
+  ["I described how well with more than two GREAT sentences in my report." 100]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; How well did I demonstrate discrete mathematical reasoning              ;;
+  ;; through solving problems?                                               ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["I described how well with more than zero sentences in my report." 100]
+  ["I described how well with more than one Good sentence in my report." 100]
+  ["I described how well with more than two GREAT sentences in my report." 100]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; How well did I discern between effective and ineffective approaches     ;;
+  ;; to problem solving?                                                     ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["I described how well with more than zero sentences in my report." 100]
+  ["I described how well with more than one Good sentence in my report." 100]
+  ["I described how well with more than two GREAT sentences in my report." 100]
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; How well did I solve problems using limited or constrained resources?   ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ["I described how well with more than zero sentences in my report." 100]
+  ["I described how well with more than one Good sentence in my report." 100]
+  ["I described how well with more than two GREAT sentences in my report." 100]
+  ))
+
+#+END_SRC
