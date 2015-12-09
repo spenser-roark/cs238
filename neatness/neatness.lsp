@@ -57,6 +57,13 @@
 
 )
 
+(defun ten-to-two (n)
+    (cond ((= n 0) (list 0))
+	  ((= n 1) (list 1))
+	          (t (nconc (ten-to-two (truncate n 2)) (list (mod n 2)))))
+  )
+
+(ten-to-two 8)
 
 (setq foo (list 1 2 3 4))
 (setq bar (cons t (cons 1 nil)))
